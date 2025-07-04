@@ -1,0 +1,85 @@
+---
+title: 概览
+description: 开发技术栈概览
+---
+
+## 创建项目初始化项目
+
+### Next.js
+
+```sh
+npx create-next-app@latest --no-install
+```
+
+选项：
+
+- TypeScript
+- ESLint
+- Tailwind CSS
+- in `src/` directory
+- App Router
+- use Turbopack
+- customize import alias
+  - @/*
+
+## Crate T3 App
+
+```sh
+pnpm create t3-app@latest
+```
+
+## 组件集成
+
+- 编程语言
+  - Typescript
+- 前端框架
+  - Next.js & React
+    - 使用 App Router
+  - shadcn/ui UI 组件库
+  - tweakcn shancn/ui 主题
+  - 图标库 lucide
+  - 品牌图标 Simple Icons
+  - 状态管理 nanostore
+    - 因为 better-auth 的 session 用 nanostore 存取
+    - > Better Auth provides a useSession hook to easily access session data on the client side. This hook is implemented using nanostore and has support for each supported framework and vanilla client, ensuring that any changes to the session (such as signing out) are immediately reflected in your UI.
+  - 状态管理 zustand
+- 后端框架
+  - tRPC 拆分前后端
+  - drizzle-orm 数据库连接，orm 框架
+- 前后端共享
+  - zod 格式验证
+- 依赖管理
+  - pnpm
+- 代码编辑，调试
+  - VS Code
+  - .vscode/launch.json 用于编写调试文件
+- auth 集成
+  - better-auth
+    - client 使用 authClient
+    - server 使用 auth.api
+- 测试验证
+  - vitest
+
+## prompt 记录
+
+集成 tRPC
+```txt
+创建一个用户注册 signUp 页面，使用 zod 对表单输入进行实时验证，集成 tRPC 以实现注册接口。在 tRPC 注册接口中，将收到的注册信息打印到控制台，并返回注册结果。页面需包含用户名、邮箱和密码输入框，表单提交时显示验证错误信息，注册成功后给出提示。
+```
+
+添加调试文件
+```txt
+为项目添加并配置 .vscode/launch.json 文件，实现对代码的高效调试和多环境支持。
+```
+
+集成 shadcn/ui
+```txt
+@/src/app/sign-up/page.tsx 集成 shadcn/ui，并使用对应的组件编写该页面。
+```
+
+## 学习路线
+
+- JavaScript / TypeScript
+  - TypeScript 是 JavaScript 的超集（Super Set），所以需要先学习 js，再学 ts。
+  - [Learn JavaScript in Y Minutes](https://learnxinyminutes.com/javascript/)
+  - [Learn TypeScript in Y Minutes](https://learnxinyminutes.com/typescript/)
