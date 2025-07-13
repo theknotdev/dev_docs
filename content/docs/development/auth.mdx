@@ -3,16 +3,92 @@ title: 认证和授权
 description: 认证和授权的详细机制
 ---
 
+## 概念定义
+
+认证（Authentication）：确认用户身份的过程，即“你是谁”。
+授权（Authorization）：在身份确认后，判断用户是否有权访问某资源或执行某操作，即“你能做什么”。
+
+- 认证是先于授权的步骤。
+- 认证关注身份，授权关注权限。
+- 认证通过后才能进行授权。
+
+## 常见实现方式
+
+### 认证
+- 账号密码登录
+- 多因素认证（MFA）
+- OAuth/OpenID Connect（第三方登录）
+- 生物识别（指纹、人脸）
+
+目前在现实实现中，一般使用 Email + Password 的方式，并使用 Email 验证的方式实现用户注册。后续的用户登录 可以通过 Email + Password 方式实现认证。如果要加强安全性，一般会辅助添加 MFA/2FA，通过添加 TOTP（基于时间的 One Time Password），Recover Code，等方式，在登录认证过程中增加认证步骤，确保在密码泄露的情况下仍然能保证帐号安全。
+
+### 授权
+- 访问控制列表（ACL）
+- 角色权限控制（RBAC）
+- 基于属性的访问控制（ABAC）
+- OAuth 2.0 的 Scope 权限
+
 ## JWT
 
-JWT 全称 JSON Web Token，是一种无状态（Statusless）的 Token 授权机制，无状态用以和有状态的 Token 区分，简单来说， jwt 由服务端生成后，不需要存在在服务端，后续用户使用 jwt 访问服务端，服务端仍然可以验证 Token。
+### 核心概念
+
+JWT 全称 JSON Web Token，是一种无状态（Stateless）的 Token 授权机制，无状态用以和有状态的 Token 区分，简单来说，Token 由服务端生成后，返回给客户端，不需要存在在服务端。后续用户使用 Token 访问服务端，服务端仍然可以验证 Token，并且在验证 Token 的签名和有效性后完成授权。
 
 JWT 的核心在验签字段，见 token 的信息通过服务端密钥加密生成签证信息后，返回给客户端，可以保证生成的 token 信息不被篡改，篡改后该 token 则失效。
 
-### 详细组成
+### 结构
 
 JWT 由三部分组成，每部分用点（.）分隔：
 
-Header（头部）：声明类型（typ，通常为JWT）和签名算法（alg，如HS256）。
-Payload（载荷）：包含声明（claims），即要传递的数据，如用户ID、权限等。
+Header（头部）：声明类型（typ，通常为 JWT）和签名算法（alg，如 HS256）。
+Payload（载荷）：包含声明（claims），即要传递的数据，如用户 ID、权限等。
 Signature（签名）：用 Header 和 Payload 以及密钥生成的签名，用于防篡改。
+
+例如：
+
+```txt
+Header.Payload.Signature
+```
+
+### 工作流程
+
+1. **生成 Token**  
+   用户登录后，服务器根据用户信息生成 JWT，并返回给客户端。
+
+2. **客户端存储 Token**
+   客户端通常将 JWT 保存在本地存储（如 localStorage、sessionStorage 或 Cookie）。
+
+3. **携带 Token 访问受保护资源**  
+   客户端每次请求时，将 JWT 放在 HTTP Header（如 `Authorization: Bearer <token>`）中发送给服务器。
+
+4. **服务器验证 Token**  
+   服务器收到请求后，使用密钥验证 JWT 的签名，确保数据未被篡改，并解析 Payload 获取用户信息。
+
+5. **授权与响应**  
+   验证通过后，服务器根据 Payload 内容进行授权，并返回响应。
+
+### 安全性
+
+- 签名确保内容未被篡改，但默认不加密，敏感信息不应直接放在 Payload。
+- 支持对称（如 HS256）和非对称（如 RS256）加密算法。
+
+### 优点
+
+- 无需在服务器保存会话信息（无状态）。
+- 易于扩展，适合分布式系统。
+
+### 缺点
+
+- 无法主动失效（如登出后 token 仍然有效，除非加入黑名单机制）。
+- Payload 可被解码，敏感信息需谨慎处理。
+
+### 个人观点
+
+普通的认证功能使用 Session 在服务端存储 Token 实现即可，概念足够简单和实用，JWT 虽然不需要在服务端存储 Token，但是存在以下个人认为的显著的缺点：
+
+- 如上所述，其一`在不添加黑名单机制的情况下，无法主动失效`，其二`Payload 可被解码，敏感信息需谨慎处理`
+- 此外，JWT 严重依赖加密密钥，一旦加密密钥泄露，那么当前所有的登录状态必须失效，使用新的加密密钥，否则获取泄露的密钥的攻击人员可以伪造任意授权信息。
+
+### 扩展学习
+
+[lucia auth](https://lucia-auth.com/sessions/stateless-tokens) 里关系 stateless token 的有详细的介绍和 JavaScript 的实现细节。
