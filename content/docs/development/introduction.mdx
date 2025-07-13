@@ -35,11 +35,16 @@ pnpm create t3-app@latest
 - 前端框架
   - Next.js & React
     - 使用 App Router
-  - shadcn/ui UI 组件库
-  - DaisyUI UI 组件库
-  - tweakcn shancn/ui 主题
-  - 图标库 lucide
-  - 品牌图标 Simple Icons
+  - UI 相关
+    - Tailwind CSS UI 组件库的基础
+    - [clsx](https://github.com/lukeed/clsx) 
+      - 动态生成 className，一般用于配合 Tailwind CSS 的样式
+      - 比如基于状态的样式，pending className 为 bg-gray-100 text-gray-500，success className 为 bg-green-500 text-white
+    - shadcn/ui UI 组件库
+    - DaisyUI UI 组件库
+    - tweakcn shancn/ui 主题
+    - 图标库 lucide
+    - 品牌图标 Simple Icons
   - 状态管理 nanostore
     - 因为 better-auth 的 session 用 nanostore 存取
     - > Better Auth provides a useSession hook to easily access session data on the client side. This hook is implemented using nanostore and has support for each supported framework and vanilla client, ensuring that any changes to the session (such as signing out) are immediately reflected in your UI.

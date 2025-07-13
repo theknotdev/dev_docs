@@ -1,0 +1,18 @@
+---
+title: 认证和授权
+description: 认证和授权的详细机制
+---
+
+## JWT
+
+JWT 全称 JSON Web Token，是一种无状态（Statusless）的 Token 授权机制，无状态用以和有状态的 Token 区分，简单来说， jwt 由服务端生成后，不需要存在在服务端，后续用户使用 jwt 访问服务端，服务端仍然可以验证 Token。
+
+JWT 的核心在验签字段，见 token 的信息通过服务端密钥加密生成签证信息后，返回给客户端，可以保证生成的 token 信息不被篡改，篡改后该 token 则失效。
+
+### 详细组成
+
+JWT 由三部分组成，每部分用点（.）分隔：
+
+Header（头部）：声明类型（typ，通常为JWT）和签名算法（alg，如HS256）。
+Payload（载荷）：包含声明（claims），即要传递的数据，如用户ID、权限等。
+Signature（签名）：用 Header 和 Payload 以及密钥生成的签名，用于防篡改。
