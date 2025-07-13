@@ -3,7 +3,8 @@
     "pages": [
         "introduction",
         "auth",
-        "cpaptcha"
+        "cpaptcha",
+        "javascript"
     ],
     "defaultOpen": true
 }

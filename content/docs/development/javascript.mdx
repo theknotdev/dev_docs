@@ -1,0 +1,73 @@
+---
+title: JavaScript
+description: 这里介绍 JavaScript，仍在建设中，而且不会很详细。
+---
+
+## 模块
+
+Modules，模块，将单一文件拆分成多个文件的编程技术。很长一段时间里，JavaScript 没有语言级别的模块语法，历史发展过程中，各个社区发展出了各自的解决办法。
+
+### 历史发展
+
+- CommonJS
+
+Node.js 默认模块系统，使用 require 和 module.exports。
+同步加载，适合服务端，不适合浏览器环境。
+
+```js
+// CommonJS 示例
+const fs = require('fs');
+module.exports = { readFile: fs.readFile };
+```
+
+- AMD（Asynchronous Module Definition）
+
+主要用于浏览器，异步加载模块，代表实现是 RequireJS。
+通过 define 和 require 管理依赖。
+
+```js
+// AMD 示例
+define(['dep1', 'dep2'], function(dep1, dep2) {
+  return function() { /* ... */ };
+});
+```
+
+### ESM
+
+- 介绍
+
+ES6 模块（ESM），为现代的 js 模块化方案，主要目的为统一前端与后端模块化标准，支持静态分析、Tree Shaking、异步加载。
+
+- 核心语法
+
+`import` 和 `export` 关键字。
+静态结构，编译时确定依赖关系。
+
+```js
+// 导出
+export function foo() {}
+export default function() {}
+
+// 导入
+import { foo } from './module.js';
+import bar from './module.js';
+```
+
+- 特点
+    - 支持静态分析和优化。
+    - 原生支持浏览器和 Node.js（需指定 "type": "module"）。
+
+### 当前主流模块化最佳实践
+
+- 优先使用 ES6 模块（ESM）。
+- 结合打包工具（如 Webpack、Vite、Rollup）实现跨环境兼容。
+- 利用 Tree Shaking 优化产物体积。
+- 明确区分默认导出和具名导出，提升可维护性。
+
+### 当前主流框架的支持
+
+- React
+    - 默认使用 ES6 模块。
+    - 配合 Babel、Webpack/Vite 实现模块打包。
+    - 支持代码分割（动态 import()）。
+    - 配置方式：通常无需特殊配置，现代脚手架（如 Create React App、Next.js、Vite）已内置支持。
