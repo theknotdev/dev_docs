@@ -4,7 +4,9 @@
         "introduction",
         "auth",
         "cpaptcha",
-        "javascript"
+        "javascript",
+        "ssh",
+        "multi-version"
     ],
     "defaultOpen": true
 }
