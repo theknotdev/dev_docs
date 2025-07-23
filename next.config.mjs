@@ -5,6 +5,9 @@ const withMDX = createMDX();
 /** @type {import('next').NextConfig} */
 const config = {
   reactStrictMode: true,
+  images: {
+    remotePatterns: [new URL("https://*.guanglai.me/**")],
+  },
 };
 
 export default withMDX(config);

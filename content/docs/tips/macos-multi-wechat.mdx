@@ -1,0 +1,38 @@
+---
+title: macOS 多开微信
+---
+
+## 复制一个新的微信
+
+打开终端，按照下面的命令操作即可，原理可以看参考部分，支持最新 4.x 版本的微信。
+
+```
+# 复制一个微信
+sudo cp -R /Applications/WeChat.app /Applications/WeChat2.app
+
+# 修改应用标识
+sudo /usr/libexec/PlistBuddy -c "Set :CFBundleIdentifier dev.theknot.wechat" /Applications/WeChat2.app/Contents/Info.plist
+
+# 强制重新签名
+sudo codesign --force --deep --sign - /Applications/WeChat2.app
+```
+
+## 注意事项
+
+- 禁用微信自动更新（设置 > 通用 > 自动升级）
+- 每次升级macOS后需重新执行签名步骤
+
+## 换个 icon
+
+新的微信应用的图标和原来的微信图标相同，不太好分辨，可以通过下面的方式换个图标。
+
+1. 去 [macOS icon pack](https://macosicons.com/) 找个顺眼的图标，可以搜索 wechat。
+2. Finder > 打开 Application 文件夹 > 右击应用 > Get Info > 把下载的 icon 拖到应用图标上。
+
+![把下载的 icon 拖到应用图标上](https://images-oss.guanglai.me/2025/248b576672dc91dd9f736b8a0b91881f.webp)
+
+## 参考
+
+- [MacOS新版微信双开终极教程 | 绕过4.0版本限制的硬核方案_服务软件_什么值得买](https://post.smzdm.com/p/adz7wonp/)
+- [如何快速更换苹果 macOS 应用图标？ | 爱范儿](https://www.ifanr.com/app/1379030)
+

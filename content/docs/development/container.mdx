@@ -1,0 +1,19 @@
+---
+title: 容器
+description: 开发过程中不可避免会在开发、部署中使用容器，本文记录一些常用的容器操作
+---
+
+## MacOS
+
+MacOS 上使用 Docker 容器推荐使用 [OrbStack](https://docs.orbstack.dev/install) 替换 Docker Desktop。
+
+以下是实操记录：
+
+1. 使用 brew 安装 OrbStack
+```sh
+brew install orbstack
+```
+2. 迁移 Docker Desktop 数据
+```sh
+orb docker migrate
+```
