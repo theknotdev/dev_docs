@@ -22,11 +22,32 @@ npx create-next-app@latest --no-install
 - customize import alias
   - @/*
 
-## Crate T3 App
+### Create T3 App
 
 ```sh
 pnpm create t3-app@latest
 ```
+
+### Create better t stack
+
+[create better t stack](https://better-t-stack.dev/) 是一个比较新的前端脚手架，很适合作为创建全栈项目的脚手架使用，目前比较常用的一个组件集成如下。
+
+```sh
+pnpm create better-t-stack@latest my-better-t-app --yes --frontend next --runtime node --database postgres --db-setup supabase --package-manager pnpm
+```
+
+- 前端： Next.js
+- 后端： hono，也可以采用 Next.js
+- orm: drizzle （默认）
+- auth: better-auth （默认）
+- api: tRPC （默认）
+- 运行时： 官网默认的运行时是 bun，不过兼容性考虑可以仍然使用 node，这里还是看发展趋势
+- 数据库：postgres
+- db 设置：supabase
+- 包管理：pnpm
+- 附加：turborepo，这也是我第一次接触 turborepo
+
+基本上来说，和下面的组件集成类似，比较大的区别是通过上面的脚手架创建的项目严格区分前后端，前端代码位于 `apps/web` 目录下，后端代码位于 `apps/server` 目录下，我认为有助于减少心智负担，前端的运行时就是 browser 和 edge runtime，后端的运行时就是 node.js。
 
 ## 组件集成
 
@@ -37,7 +58,7 @@ pnpm create t3-app@latest
     - 使用 App Router
   - UI 相关
     - Tailwind CSS UI 组件库的基础
-    - [clsx](https://github.com/lukeed/clsx) 
+    - [clsx](https://github.com/lukeed/clsx)
       - 动态生成 className，一般用于配合 Tailwind CSS 的样式
       - 比如基于状态的样式，pending className 为 bg-gray-100 text-gray-500，success className 为 bg-green-500 text-white
     - shadcn/ui UI 组件库
@@ -66,26 +87,14 @@ pnpm create t3-app@latest
 - 测试验证
   - vitest
 
-## prompt 记录
-
-集成 tRPC
-```txt
-创建一个用户注册 signUp 页面，使用 zod 对表单输入进行实时验证，集成 tRPC 以实现注册接口。在 tRPC 注册接口中，将收到的注册信息打印到控制台，并返回注册结果。页面需包含用户名、邮箱和密码输入框，表单提交时显示验证错误信息，注册成功后给出提示。
-```
-
-添加调试文件
-```txt
-为项目添加并配置 .vscode/launch.json 文件，实现对代码的高效调试和多环境支持。
-```
-
-集成 shadcn/ui
-```txt
-@/src/app/sign-up/page.tsx 集成 shadcn/ui，并使用对应的组件编写该页面。
-```
-
 ## 学习路线
 
 - JavaScript / TypeScript
   - TypeScript 是 JavaScript 的超集（Super Set），所以需要先学习 js，再学 ts。
   - [Learn JavaScript in Y Minutes](https://learnxinyminutes.com/javascript/)
   - [Learn TypeScript in Y Minutes](https://learnxinyminutes.com/typescript/)
+
+- React & Next.js
+  - [Next.js 的 React 教程](https://nextjs.org/learn/react-foundations)
+  - [Next.js 的 App Router 教程](https://nextjs.org/learn/dashboard-app)
+  - 之后更多就是查看文档
