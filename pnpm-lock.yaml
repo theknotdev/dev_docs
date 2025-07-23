@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@orama/tokenizers':
+        specifier: ^3.1.11
+        version: 3.1.11
       class-variance-authority:
         specifier: ^0.7.1
         version: 0.7.1
@@ -541,6 +544,14 @@ packages:
 
   '@orama/orama@3.1.10':
     resolution: {integrity: sha512-YNou2xlCIgPhMDe1TBEmp1wsAPFCL7Fd11rct7YfXYYiNAVBNL2rWoEydJRDJFVmqgt0l6mzSg35sDQ3i8yfKQ==}
+    engines: {node: '>= 20.0.0'}
+
+  '@orama/orama@3.1.11':
+    resolution: {integrity: sha512-Szki0cgFiXE5F9RLx2lUyEtJllnuCSQ4B8RLDwIjXkVit6qZjoDAxH+xhJs29MjKLDz0tbPLdKFa6QrQ/qoGGA==}
+    engines: {node: '>= 20.0.0'}
+
+  '@orama/tokenizers@3.1.11':
+    resolution: {integrity: sha512-fwULrEdbP5/83gFjaX1X/l7lzdD7LxBT8YbAzcY89BmXjJcJETU/5qckp4ZNDMhRRjJUSGKH4bAXHsm6yu+ZPw==}
     engines: {node: '>= 20.0.0'}
 
   '@radix-ui/number@1.1.1':
@@ -3864,6 +3875,12 @@ snapshots:
   '@nolyfill/is-core-module@1.0.39': {}
 
   '@orama/orama@3.1.10': {}
+
+  '@orama/orama@3.1.11': {}
+
+  '@orama/tokenizers@3.1.11':
+    dependencies:
+      '@orama/orama': 3.1.11
 
   '@radix-ui/number@1.1.1': {}
 
