@@ -4,9 +4,8 @@
         "introduction",
         "auth",
         "cpaptcha",
-        "javascript",
         "ssh",
-        "multi-version"
+        "nodejs-multithread"
     ],
-    "defaultOpen": true
+    "defaultOpen": false
 }

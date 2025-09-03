@@ -1,7 +1,8 @@
 {
     "title": "小技巧",
     "pages": [
-        "macos-multi-wechat"
+        "macos-multi-wechat",
+        "multi-version"
     ],
-    "defaultOpen": true
+    "defaultOpen": false
 }

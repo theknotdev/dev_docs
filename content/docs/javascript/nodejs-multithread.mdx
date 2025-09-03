@@ -1,0 +1,130 @@
+---
+title: ES/JS 和 Node.js 多线程
+description: Node.js、ES6 之后异步与线程池相关知识总结
+---
+## ES 异步语法
+
+### Promise
+- ES6 引入，用于管理异步操作。
+- 有 pending、fulfilled、rejected 三种状态。
+- 通过 `.then()` 处理成功，`.catch()` 处理失败。
+
+### async/await
+- ES2017（ES8）引入，是 Promise 的语法糖。
+- `async` 声明异步函数，返回 Promise。
+- `await` 等待 Promise 结果，可用 try/catch 处理异常。
+- 让异步代码书写更像同步代码，易读易维护。
+
+### 等价示例
+```javascript
+// Promise
+fetchData()
+  .then(data => processData(data))
+  .then(result => console.log(result))
+  .catch(error => console.error(error));
+
+// async/await
+async function main() {
+  try {
+    const data = await fetchData();
+    const result = await processData(data);
+    console.log(result);
+  } catch (error) {
+    console.error(error);
+  }
+}
+main();
+```
+
+### 最佳实践
+- 推荐优先使用 async/await。
+- 并发任务用 Promise.all。
+- 错误处理配合 try/catch。
+- 并发与串行处理要区分（Promise.all vs for...of await）。
+
+---
+
+## async/await 与 Java Future 的对比
+
+- 都支持异步结果获取和异常捕获（JS: try/catch + await，Java: try/catch + Future.get()）。
+- JS 的 await 非阻塞主线程，Java 的 get() 阻塞调用线程。
+- Java 可多线程并发，JS 依赖事件循环（单线程）。
+
+---
+
+## JS 事件循环与 Java 多线程机制
+
+### JS 事件循环（单线程）
+- 所有 JS 代码在主线程执行。
+- 异步任务（IO、定时器、Promise等）通过任务队列和事件循环调度。
+- 微任务（Promise）优先于宏任务（setTimeout）。
+
+### Java 多线程
+- 可创建多个线程并行执行任务。
+- 线程池（如 ExecutorService）用于复用线程，提升并发效率。
+- 需注意线程安全和资源同步。
+
+---
+
+## Node.js 线程池与多线程并发
+
+### libuv 线程池
+- Node.js 的底层 libuv 自动维护线程池（默认 4 个线程）。
+- 用于处理文件 IO、加密、DNS 等原生异步操作。
+- 线程池大小可通过 UV_THREADPOOL_SIZE 环境变量设置，但 JS 层不能直接提交任务到该线程池。
+
+### worker_threads 多线程
+- Node.js v10.5+ 引入 worker_threads，允许在 JS 层创建多线程 Worker。
+- 适合 CPU 密集型任务、图片处理等。
+- 主线程与 Worker 线程通过消息通信。
+
+### cluster/child_process 并发
+- cluster：多进程模式，常用于服务器多核利用。
+- child_process：创建子进程执行独立任务。
+
+---
+
+## Node.js 线程池与 Java 线程池的区别
+
+- Java 线程池（如 ExecutorService）是应用层，开发者可直接管理和提交任务。
+- Node.js 原生线程池只服务于底层模块，如 fs/crypto/dns，JS 层无法直接管理。
+- JS 层多线程并发需用 worker_threads，池化需第三方库或自行实现。
+
+---
+
+## Node.js 线程池管理第三方库推荐
+
+### workerpool
+- API 类似 Java 线程池，易用，支持 TypeScript。
+- 适合大多数多线程任务。
+- [GitHub](https://github.com/josdejong/workerpool)
+
+### poolifier
+- 高性能、API 设计接近 Java、支持线程和进程池、TypeScript 支持。
+- 适合自定义需求和性能调优。
+- [GitHub](https://github.com/poolifier/poolifier)
+
+### threads.js
+- 适合 TypeScript，支持类型安全。
+- 灵活的 worker 模型。
+- [GitHub](https://github.com/andywer/threads.js)
+
+---
+
+## Node.js 官方线程池现状
+
+- Node.js 官方仅提供 worker_threads 模块（底层 API），**没有官方线程池管理库**。
+- 线程池管理功能需依赖第三方库（如 workerpool、poolifier）或自行实现。
+
+---
+
+## 典型场景对比小结
+
+|            | JavaScript (事件循环) | Java (多线程)         |
+|------------|----------------------|-----------------------|
+| 主线程     | 单线程               | 多线程                |
+| 并发模型   | 事件循环 + 线程池    | 线程池/多线程         |
+| 线程池管理 | 底层自动/需第三方库  | 应用层直接管理        |
+| 适用场景   | IO密集/交互          | IO/计算密集           |
+| 线程安全   | 天然安全（单线程）   | 需关注同步            |
+
