@@ -2,6 +2,7 @@
     "title": "JavaScript",
     "pages": [
         "javascript",
+        "esm-modules",
         "nodejs-multithread"
     ],
     "defaultOpen": false

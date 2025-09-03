@@ -1,0 +1,151 @@
+---
+title: ESM 入门
+description: ESM（ECMAScript Modules）简介与最佳实践
+---
+
+
+## 概述
+
+ESM（ECMAScript Modules）是 JavaScript 官方的模块系统，自 ES6 起成为标准。它带来了模块化、依赖管理、静态分析和现代化的开发体验，逐步取代了 CommonJS 等历史方案，得到浏览器和 Node.js 的原生支持。
+
+## 基本语法
+
+**导出（export）**
+```js
+export const foo = 42;
+export function bar() {}
+export default function () {}
+```
+
+**导入（import）**
+```js
+import { foo, bar } from './module.js';
+import baz from './other-module.js'; // default 导入
+```
+
+## 主要优势
+
+- 静态分析，支持 tree shaking 和优化。
+- 支持异步/动态加载（import()）。
+- 跨平台（浏览器与 Node.js）标准化。
+
+## 使用最佳实践
+
+### 浏览器端
+
+- 使用 `<script type="module">` 启用 ESM。
+- 路径需带扩展名（如 `.js`）。
+- 避免全局变量污染。
+
+### Node.js 端
+
+- 推荐新项目采用 ESM，`package.json` 配置 `"type": "module"`。
+- 文件扩展名建议统一（`.js` 或 `.mjs`）。
+- 避免 require 与 import 混用。
+- 优先选用 ESM 版本的第三方库。
+
+### 构建工具与发布
+
+- 现代打包工具（如 Vite、Webpack 5、Rollup）原生支持 ESM。
+- npm 包推荐发布 ESM 或双版本，并合理配置 package.json 的 `exports` 字段。
+
+### 动态导入
+
+- 使用 `import()` 实现按需加载，返回 Promise，适合异步加载模块。
+
+```js
+const module = await import('./module.js');
+```
+
+### 迁移建议
+
+- 老项目逐步迁移，Node.js 14+ 原生支持 ESM。
+
+## 导出与导入的详细示例
+
+### 具名导出与导入
+
+```js
+// math.js
+export const pi = 3.14159;
+export function add(a, b) { return a + b; }
+
+// main.js
+import { pi, add } from './math.js';
+```
+
+### 默认导出与导入
+
+```js
+// config.js
+const config = { api: "/api" };
+export default config;
+
+// main.js
+import config from './config.js';
+```
+
+### 混合导出和导入
+
+```js
+// logger.js
+export function log(msg) { console.log(msg); }
+export default function error(msg) { console.error(msg); }
+
+// main.js
+import error, { log } from './logger.js';
+```
+
+### 重命名导入与导出
+
+```js
+// math.js
+export const pi = 3.14;
+export function add(a, b) { return a + b; }
+
+// main.js
+import { pi as circlePi, add as sum } from './math.js';
+```
+
+### 重新导出
+
+```js
+// utils.js
+export function format(str) { return str.trim(); }
+
+// index.js
+export * from './utils.js';
+export { format as formatString } from './utils.js';
+```
+
+### 动态导入
+
+```js
+async function loadMath() {
+  const math = await import('./math.js');
+  console.log(math.pi);
+}
+```
+
+## 动态导入与 async/await 的关系
+
+- `import()` 返回 Promise，加载模块过程是异步的（不阻塞主线程）。
+- 结合 `async/await`，可以像同步代码一样书写异步模块加载逻辑，提高可读性与维护性。
+
+```js
+async function load() {
+  const mod = await import('./module.js');
+  mod.doSomething();
+}
+```
+
+等价于：
+```js
+import('./module.js').then(mod => mod.doSomething());
+```
+
+## 注意事项
+
+- import/export 只能在模块顶层。
+- 路径需为字符串常量，不能动态拼接。
+- 默认导出与具名导出需正确使用及导入。
